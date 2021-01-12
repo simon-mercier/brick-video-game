@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: 749fc60422adb984a82a89f83344580c
+timeCreated: 1523680034
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - map: {instanceID: 0}
+  - defTile: {instanceID: 0}
+  - endTile: {instanceID: 0}
+  - startTile: {instanceID: 0}
+  - cpTile: {instanceID: 0}
+  - newTile: {instanceID: 0}
+  - cpTempTile: {instanceID: 0}
+  - newTempTile: {instanceID: 0}
+  - qsTile: {instanceID: 0}
+  - colliderBrick: {instanceID: 0}
+  - blackTile: {instanceID: 0}
+  - whiteTile: {instanceID: 0}
+  - flashTile: {instanceID: 0}
+  - arrow: {fileID: 1957168088302354, guid: 434b7b3c9e847314c819d9e7376bc000, type: 2}
+  - brick: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

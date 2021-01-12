@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Brick</title>
+  </head>
+  <body style="text-align: center">
+    <canvas id="unity-canvas" style="width: 1728px; height: 972px; background: #B3B3B3"></canvas>
+    <script src="Build/Builds.loader.js"></script>
+    <script>
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        dataUrl: "Build/Builds.data.gz",
+        frameworkUrl: "Build/Builds.framework.js.gz",
+        codeUrl: "Build/Builds.wasm.gz",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Simon-Mercier",
+        productName: "Brick",
+        productVersion: "1.0",
+      });
+    </script>
+  </body>
+</html>
