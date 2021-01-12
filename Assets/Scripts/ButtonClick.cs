@@ -49,8 +49,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Level()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
 
         if (Convert.ToInt32(gameObject.name.Substring(12)) <= LevelManager.maxLevel)
         {
@@ -75,8 +75,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Help()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+        AudioManager.Play(Sounds.Click);
         foreach (Transform t in transform.parent)
         {
             if (t.name == "HELP")
@@ -93,8 +93,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Help2()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         foreach (Transform t in transform.parent)
         {
             if (t.name == "HELP2")
@@ -111,8 +111,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Help3()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         foreach (Transform t in transform.parent.parent)
         {
             if (t.name == "HELP")
@@ -129,8 +129,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Help4()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         foreach (Transform t in transform.parent.parent)
         {
             if (t.name == "HELP2")
@@ -148,8 +148,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Settings()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
 
         foreach (Transform t in transform.root)
         {
@@ -188,8 +188,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_NextLevel()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
 
         _DetectGameOver = FindObjectOfType<DetectGameOver>();
         StartCoroutine(_DetectGameOver.DestroyLevel(0f));
@@ -197,8 +197,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Play()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
 
         canChangePage = true;
 
@@ -213,8 +213,8 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Resume()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         canChangePage = true;
         OnClick_Settings();
     }
@@ -222,8 +222,8 @@ public class ButtonClick : MonoBehaviour
     public void OnClick_Restart()
     {
         _MakeMap = FindObjectOfType<MakeMap>();
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         if (!GameObject.Find("Levels"))
         {
             _MakeMap.Restart();
@@ -234,16 +234,16 @@ public class ButtonClick : MonoBehaviour
     public void OnClick_RestartLevelFail()
     {
         _MakeMap = FindObjectOfType<MakeMap>();
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         _MakeMap.Restart();
     }
 
     public void OnClick_RestartLevelSuccess()
     {
         _MakeMap = FindObjectOfType<MakeMap>();
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
 
         if (LevelManager.currentLevel >= LevelManager.maxLevel)
         {
@@ -256,15 +256,15 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Elsewhere()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         OnClick_Settings();
     }
 
     public void OnClick_Elsewhere_Help()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         OnClick_Help();
     }
     
@@ -272,8 +272,8 @@ public class ButtonClick : MonoBehaviour
     {
         if (ButtonManager.page != 0 && canChangePage)
         {
-            if (AudioManager.SoundOn)
-                FindObjectOfType<AudioManager>().Play("Click");
+            
+                AudioManager.Play(Sounds.Click);
             StartCoroutine(DoLeftAnim());
         }
     }
@@ -284,16 +284,16 @@ public class ButtonClick : MonoBehaviour
 
         if (ButtonManager.page == (Math.Floor((double) _ButtonManager.buttonPrefabs.Count / 21) - 1) || !canChangePage)
             return;
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         StartCoroutine(DoRightAnim());
     }
 
     public void OnClick_Selector()
     {
         _MakeMap = FindObjectOfType<MakeMap>();
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         if (_MakeMap != null)
         {
             _MakeMap.DestroyLevel();
@@ -307,10 +307,10 @@ public class ButtonClick : MonoBehaviour
 
     public void OnClick_Sound()
     {
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        AudioManager.Play(Sounds.Click);
 
         AudioManager.SoundOn = !AudioManager.SoundOn;
+
         if (AudioManager.SoundOn)
         {
             gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/SoundOn");
@@ -325,8 +325,8 @@ public class ButtonClick : MonoBehaviour
     public void OnClick_Levels()
     {
         _MakeMap = FindObjectOfType<MakeMap>();
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         levelSelector = GameObject.Find("UI").transform.GetChild(0).gameObject;
         levelSelector.SetActive(true);
         if(GameObject.Find("Level").transform.childCount > 0)
@@ -344,8 +344,8 @@ public class ButtonClick : MonoBehaviour
     public void OnClick_Selector_EndGame()
     {
         _MakeMap = FindObjectOfType<MakeMap>();
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Click");
+        
+            AudioManager.Play(Sounds.Click);
         levelSelector = GameObject.Find("UI").transform.GetChild(0).gameObject;
         levelSelector.SetActive(true);
         GameObject.Find("EndGameScreen").SetActive(false);

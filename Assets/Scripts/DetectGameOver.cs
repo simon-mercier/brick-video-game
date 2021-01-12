@@ -83,7 +83,7 @@ public class DetectGameOver : MonoBehaviour
         if (!DetectIfIsUpOnTile(makeMap.EndTilePos) || !MoveBrick.CanMove) return;
         if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
         {
-            FindObjectOfType<AudioManager>().Play("Win");
+            AudioManager.Play(Sounds.Win);
             MoveBrick.CanPlaySound = false;
         }
 
@@ -98,30 +98,11 @@ public class DetectGameOver : MonoBehaviour
         else
         {
             ChangeCurrentLevel();
-            AdRoll();
             LevelSuccess.SetActive(true);
         }
     }
 
-    private void AdRoll()
-    {
-        
-        if (adRollTurn)
-        {
-#if ENABLE_UNITY_ADS
-            if (Advertisement.IsReady())
-            {
-                Advertisement.Show();
-            }
-#endif
-            adRollTurn = false;
-        }
-        else
-        {
-            adRollTurn = true;
-        }
-    }
-
+   
     public void ChangeCurrentLevel()
     {
         if (LevelManager.currentLevel < LevelManager.maxLevel ||
@@ -138,7 +119,7 @@ public class DetectGameOver : MonoBehaviour
         if (!DetectIfIsUpOnTile(makeMap.StartTilePos)) return;
         if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
         {
-            FindObjectOfType<AudioManager>().Play("Switch");
+            AudioManager.Play(Sounds.Switch);
             MoveBrick.CanPlaySound = false;
         }
         makeMap.Tiles.ForEach(a => a.GetComponent<MeshRenderer>().enabled = true);
@@ -156,7 +137,7 @@ public class DetectGameOver : MonoBehaviour
         CanPressCheckPoint = false;
         if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
         {
-            FindObjectOfType<AudioManager>().Play("Switch");
+            AudioManager.Play(Sounds.Switch);
             MoveBrick.CanPlaySound = false;
         }
         MakeMap.SetTilesActiveState(true, makeMap.HiddenTiles);
@@ -190,7 +171,7 @@ public class DetectGameOver : MonoBehaviour
 
         if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
         {
-            FindObjectOfType<AudioManager>().Play("Switch");
+            AudioManager.Play(Sounds.Switch);
             MoveBrick.CanPlaySound = false;
         }
         MakeMap.SetTilesActiveState(false, makeMap.HiddenTempTiles);

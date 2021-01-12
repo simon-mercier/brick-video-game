@@ -77,11 +77,10 @@ public class MoveBrick : MonoBehaviour
 
     private void AppropriateDir(Dir direction)
     {
-        //Moves.moveCount ++;
-        
         dgo.BrickHasMoved = true;
-        if (AudioManager.SoundOn)
-            FindObjectOfType<AudioManager>().Play("Move");
+        
+         AudioManager.Play(Sounds.Move);
+
         Dir = direction;
         CanPlaySound = true;
         swiped = true;

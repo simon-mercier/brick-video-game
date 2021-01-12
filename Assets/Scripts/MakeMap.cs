@@ -439,7 +439,7 @@ public class MakeMap : MonoBehaviour
     {
         if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
         {
-            FindObjectOfType<AudioManager>().Play("Die");
+            AudioManager.Play(Sounds.Die);
             MoveBrick.CanPlaySound = false;
         }
         Instance.levelFailScreen.SetActive(true);

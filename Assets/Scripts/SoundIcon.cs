@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundIcon : MonoBehaviour {
+public sealed class SoundIcon : MonoBehaviour {
 
 	void Start () 
     {
         AudioManager.SoundOn = PlayerPrefs.GetInt("Sound") == 0;
 
-        gameObject.GetComponent<Image>().sprite = AudioManager.SoundOn ? Resources.Load<Sprite>("Sprites/SoundOn") : Resources.Load<Sprite>("Sprites/SoundOff");
-
-        
+        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>(AudioManager.SoundOn ? "Sprites/SoundOn" : "Sprites/SoundOff");
     }
 }

@@ -7,10 +7,10 @@ public class QuickSandDetector : MonoBehaviour
     public bool IsQs { get; set; } = false;
     public static bool AlreadyTriggered { get; set; } = false;
 
-    private MakeMap _MakeMap;
+    private static MakeMap _MakeMap;
 
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(IsQs && other.name == "Brick(Clone)")
         {
@@ -24,16 +24,19 @@ public class QuickSandDetector : MonoBehaviour
             StartCoroutine(KillBrick(.6f, other));
         }
     }
-    IEnumerator KillBrick(float timeDelay, Collider other)
+
+    private IEnumerator KillBrick(float timeDelay, Collider other)
     {
         yield return new WaitForSeconds(timeDelay);
         MakeMap.RestartLevel();
     }
-    IEnumerator SetNotActive(float timeDelay)
+
+    private IEnumerator SetNotActive(float timeDelay)
     {
         yield return new WaitForSeconds(timeDelay);
         gameObject.SetActive(false);
     }
+
     private void QsTilesFall()
     {
         _MakeMap = FindObjectOfType<MakeMap>();

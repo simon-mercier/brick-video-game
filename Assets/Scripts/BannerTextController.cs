@@ -8,11 +8,7 @@ using TMPro;
 public class BannerTextController : MonoBehaviour
 {
     private static BannerTextController instance;
-
-    private void Awake()
-    {
-        instance = this;
-    }
+    public static BannerTextController Instance => instance ??= new BannerTextController();
 
     private static string FindName()
     {
@@ -26,7 +22,7 @@ public class BannerTextController : MonoBehaviour
 
     public static void ChangeName()
     {
-        instance.GetComponent<TMP_Text>().text = FindName();
+        Instance.GetComponent<TMP_Text>().text = FindName();
     }
     
 }

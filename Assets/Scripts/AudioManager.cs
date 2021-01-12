@@ -9,43 +9,56 @@ public class AudioManager : MonoBehaviour {
 
     public static bool SoundOn = true;
 
-    public Sound[] sounds;
-	// Use this for initialization
-	void Awake ()
+    private static Dictionary<Sounds, Sound> sounds;
+
+    private void Start()
     {
-        foreach(Sound s in sounds)
+        sounds = new Dictionary<Sounds, Sound> {
+            { Sounds.Click, new Sound { Clip =  Resources.Load<AudioClip>("Sounds/Click_Clip")} },
+            { Sounds.Die, new Sound { Clip = Resources.Load<AudioClip>("Sounds/Die_Clip")} },
+            { Sounds.Move, new Sound { Clip = Resources.Load<AudioClip>("Sounds/Move_Clip")} },
+            { Sounds.Switch, new Sound { Clip = Resources.Load<AudioClip>("Sounds/Switch_Clip")} },
+            { Sounds.Win, new Sound { Clip = Resources.Load<AudioClip>("Sounds/Win_Clip")} },
+        };
+
+        foreach (var sound in sounds.Values)
         {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
+            sound.Source = gameObject.AddComponent<AudioSource>();
+            sound.Source.clip = sound.Clip;
 
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.loop = s.loop;
+            sound.Source.volume = sound.Volume;
+            sound.Source.pitch = sound.Pitch;
+            sound.Source.loop = sound.Loop;
+
         }
-	}
+    }
 
-    public void Play(string name)
+    public static void Play(Sounds sound)
     {
-        Sound s = Array.Find(sounds, a => a.name == name);
-        s?.source.Play();
+        if (SoundOn)
+            sounds[sound]?.Source.Play();
     }
 }
 
 [System.Serializable]
 public class Sound
 {
-    public string name;
+    public AudioClip Clip { get; set; }
 
-    public AudioClip clip;
+    public float Volume { get; set; } = 1;
 
-    [Range(0f, 1f)]
-    public float volume;
+    public float Pitch { get; set; } = 1;
 
-    [Range(0.1f, 3f)]
-    public float pitch;
+    public bool Loop { get; set; } = false;
 
-    public bool loop;
-
-    [HideInInspector]
-    public AudioSource source;
+    public AudioSource Source { get; set; }
 }
+public enum Sounds
+{
+    Move,
+    Die,
+    Win,
+    Switch,
+    Click,
+}
+
