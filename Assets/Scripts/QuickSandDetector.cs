@@ -20,7 +20,7 @@ public class QuickSandDetector : MonoBehaviour
         else if (!AlreadyTriggered && other.name == "Brick(Clone)")
         {
             AlreadyTriggered = true;
-            MoveBrick.CanMove = false;
+            BrickManager.CanMove = false;
             StartCoroutine(KillBrick(.6f, other));
         }
     }

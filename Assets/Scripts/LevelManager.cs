@@ -1,40 +1,112 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+[System.Serializable]
+public sealed class LevelManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _LevelPrefab;
+    private static LevelManager instance;
+    public static LevelManager Instance => instance;
+   
+    private int LastUnlockedLevel { get; set; }
 
-    public static Sprite[] mapsSprites;
-    public static int maxLevel = 1; //from 1 to max
-    public static int currentLevel; //from 1 to max
-    public static int numberOfLevels;
+    public readonly int NUMBER_OF_LEVELS = 84;
+
+    private Level currentLevel = null;
 
     private void Awake()
     {
-        GetSprites();
+        //Serilization.SerializeLevels();
+        instance ??= this;
+        LoadLevel(1);
     }
 
-    private void GetSprites()
+    public void LoadLevel(int level)
     {
-        mapsSprites = Resources.LoadAll<Sprite>("Sprites/Levels");
-        numberOfLevels = mapsSprites.Length;
+        currentLevel = new Level(level);
     }
 
-    internal void SpawnLevel()
+    public void LevelCompleted()
     {
-        var thisLevel = Instantiate(_LevelPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-        thisLevel.SetActive(true);
+        if (currentLevel.LevelNumber >= NUMBER_OF_LEVELS)
+            return;
 
-        thisLevel.name = "level " + currentLevel;
-        thisLevel.GetComponent<MakeMap>().map = mapsSprites[currentLevel - 1];
-        thisLevel.GetComponent<MakeMap>().CreateMap();
+        if(currentLevel.LevelNumber >= LastUnlockedLevel)
+            PlayerPrefs.SetInt("CurrentLevel", ++LastUnlockedLevel);
 
-        thisLevel.transform.SetParent(GameObject.Find("Level").transform);
-        ButtonClick.currentyLoadingLevel = false;
+        currentLevel = null;
+    }
 
-        BannerTextController.ChangeName();
+    public void LevelFailed()
+    {
+        currentLevel = null;
+    }
+}
+
+class Level
+{
+    private List<GameObject> tiles;
+    public int LevelNumber { get; private set; }
+
+    public GameObject LevelGameObject { get; set; } = null;
+    public Level(int level)
+    {
+        tiles = new List<GameObject>();
+        this.LevelNumber = level;
+        GenerateLevel();
+    }
+
+    private void GenerateLevel()
+    {
+        LevelGameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/BaseLevel"), GameObject.Find("Level").transform) as GameObject;
+        var data = Serilization.DeserializeLevel(LevelNumber);
+        var baseLevelTransform = LevelGameObject.transform;
+        
+        for (int row = 0; row < data.GetLength(0); row++)
+        {
+            for (int col = 0; col < data.GetLength(1); col++)
+            {
+                var tile = data[row, col];
+
+                switch (tile)
+                {
+                    case 't':
+                        tiles.Add(GameObject.Instantiate(NormalTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 's':
+                        tiles.Add(GameObject.Instantiate(StartTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 'e':
+                        tiles.Add(GameObject.Instantiate(EndTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 'q':
+                        tiles.Add(GameObject.Instantiate(SandTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 'a':
+                        tiles.Add(GameObject.Instantiate(CheckPointTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 'h':
+                        tiles.Add(GameObject.Instantiate(HiddenTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 'c':
+                        tiles.Add(GameObject.Instantiate(CkeckPointTempTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 'p':
+                        tiles.Add(GameObject.Instantiate(HiddenTempTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case 'f':
+                        tiles.Add(GameObject.Instantiate(FlashTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+                    case '0':
+                        tiles.Add(GameObject.Instantiate(ColliderTile.Tile, new Vector3(row, -1.5f, col), Quaternion.identity, LevelGameObject.transform));
+                        break;
+
+                }
+            }
+        }
+
+        var brick = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Brick/Brick"), new Vector3(0, 3, 0), Quaternion.identity) as GameObject;
+        brick.SetActive(true);
     }
 }

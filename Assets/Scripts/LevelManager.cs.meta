@@ -3,7 +3,22 @@ guid: 266df12f317046f4099d56913e5fa372
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - defTile: {fileID: 1385874079494798, guid: 4641b297bded3bb429877f9bfb16f2b6, type: 3}
+  - endTile: {fileID: 1716500789225942, guid: f1817d3d4ab03fe45a50b1f86f915e3a, type: 3}
+  - startTile: {fileID: 1596002625710222, guid: f8b78b870d26efa439fd65d6db92fcec,
+      type: 3}
+  - cpTile: {fileID: 1807063698873386, guid: aa9cd0b95f445ab429ab1f9283a2d638, type: 3}
+  - newTile: {fileID: 1719412898939764, guid: 47bcf4119462d6343a3a47053f0f2795, type: 3}
+  - cpTempTile: {fileID: 1156966701979524, guid: 42451f90a03675e4bb9d18b6fdc03015,
+      type: 3}
+  - newTempTile: {fileID: 1765098329799546, guid: bd3846ce065aeea4aa9f57b31ddd6c98,
+      type: 3}
+  - qsTile: {fileID: 1681452269258532, guid: 1a64c7742a28ab14691d508561ffc1b3, type: 3}
+  - colliderBrick: {fileID: 1727336076516574, guid: 926cfe742784d4049adcdc9886360515,
+      type: 3}
+  - flashTile: {fileID: 1535921390969834, guid: 015948f4a03bd134d97e765cbb73efc8,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

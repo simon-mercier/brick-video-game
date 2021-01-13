@@ -80,47 +80,35 @@ public class DetectGameOver : MonoBehaviour
 
     private void DetectIfPlayerEndTile()
     {
-        if (!DetectIfIsUpOnTile(makeMap.EndTilePos) || !MoveBrick.CanMove) return;
-        if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
+        if (!DetectIfIsUpOnTile(makeMap.EndTilePos) || !BrickManager.CanMove) return;
+        if (BrickManager.CanPlaySound && AudioManager.SoundOn)
         {
             AudioManager.Play(Sounds.Win);
-            MoveBrick.CanPlaySound = false;
+            BrickManager.CanPlaySound = false;
         }
 
-        MoveBrick.CanMove = false;
+        BrickManager.CanMove = false;
 
         if (!FirstTimeInLoop) return;
         FirstTimeInLoop = false;
-        if (LevelManager.currentLevel == LevelManager.numberOfLevels)
-        {
-            GameObject.Find("UI").transform.GetChild(5).gameObject.SetActive(true);
-        }
-        else
-        {
-            ChangeCurrentLevel();
-            LevelSuccess.SetActive(true);
-        }
+        //if (LevelManager.currentLevel == LevelManager.numberOfLevels)
+        //{
+        //    GameObject.Find("UI").transform.GetChild(5).gameObject.SetActive(true);
+        //}
+        //else
+        //{
+        //    ChangeCurrentLevel();
+        //    LevelSuccess.SetActive(true);
+        //}
     }
-
-   
-    public void ChangeCurrentLevel()
-    {
-        if (LevelManager.currentLevel < LevelManager.maxLevel ||
-            LevelManager.maxLevel > LevelManager.numberOfLevels) return;
-        PlayerPrefs.SetInt("CurrentLevel", LevelManager.maxLevel);
-        LevelManager.maxLevel = LevelManager.currentLevel;
-
-
-    }
-
 
     private void DetectIfPlayerStartTile()
     {
         if (!DetectIfIsUpOnTile(makeMap.StartTilePos)) return;
-        if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
+        if (BrickManager.CanPlaySound && AudioManager.SoundOn)
         {
             AudioManager.Play(Sounds.Switch);
-            MoveBrick.CanPlaySound = false;
+            BrickManager.CanPlaySound = false;
         }
         makeMap.Tiles.ForEach(a => a.GetComponent<MeshRenderer>().enabled = true);
         makeMap.HiddenTempTiles.ForEach(a => a.GetComponent<MeshRenderer>().enabled = true);
@@ -135,10 +123,10 @@ public class DetectGameOver : MonoBehaviour
     {
         if (!DetectIfIsUpOnTile(makeMap.HiddenTileActivators)) return;
         CanPressCheckPoint = false;
-        if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
+        if (BrickManager.CanPlaySound && AudioManager.SoundOn)
         {
             AudioManager.Play(Sounds.Switch);
-            MoveBrick.CanPlaySound = false;
+            BrickManager.CanPlaySound = false;
         }
         MakeMap.SetTilesActiveState(true, makeMap.HiddenTiles);
     }
@@ -169,10 +157,10 @@ public class DetectGameOver : MonoBehaviour
         if (!DetectIfIsUpOnTile(makeMap.HiddenTempTileActivators) || !(timeLeft < 0)) return;
         timeLeft = .5f;
 
-        if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
+        if (BrickManager.CanPlaySound && AudioManager.SoundOn)
         {
             AudioManager.Play(Sounds.Switch);
-            MoveBrick.CanPlaySound = false;
+            BrickManager.CanPlaySound = false;
         }
         MakeMap.SetTilesActiveState(false, makeMap.HiddenTempTiles);
         MakeMap.SetTilesActiveState(true, makeMap.HiddenTempTiles);
@@ -194,15 +182,14 @@ public class DetectGameOver : MonoBehaviour
 
         makeMap.DestroyLevel();
 
-        LevelManager.currentLevel++;
-        if (LevelManager.currentLevel > LevelManager.maxLevel)
-            LevelManager.maxLevel = LevelManager.currentLevel;
+        //LevelManager.currentLevel++;
+        //if (LevelManager.currentLevel > LevelManager.maxLevel)
+        //    LevelManager.maxLevel = LevelManager.currentLevel;
 
-        PlayerPrefs.SetInt("CurrentLevel", LevelManager.maxLevel);
+        //PlayerPrefs.SetInt("CurrentLevel", LevelManager.maxLevel);
 
-        levelManager.SpawnLevel();
+        //levelManager.SpawnLevel();
 
-        BannerTextController.ChangeName();
 
     }
 }

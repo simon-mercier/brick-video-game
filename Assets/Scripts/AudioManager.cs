@@ -11,6 +11,10 @@ public class AudioManager : MonoBehaviour {
 
     private static Dictionary<Sounds, Sound> sounds;
 
+    public void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     private void Start()
     {
         sounds = new Dictionary<Sounds, Sound> {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,17 +13,17 @@ public class MakeMap : MonoBehaviour
     private DetectGameOver detectGameOver;
 
     [Header("TILES\n")]
-    [SerializeField] private GameObject defTile;
-    [SerializeField] private GameObject endTile;
-    [SerializeField] private GameObject startTile;
-    [SerializeField] private GameObject cpTile;
-    [SerializeField] private GameObject newTile;
-    [SerializeField] private GameObject cpTempTile;
-    [SerializeField] private GameObject newTempTile;
-    [SerializeField] private GameObject qsTile;
-    [SerializeField] private GameObject colliderBrick;
-    [SerializeField] private GameObject flashTile;
-    [SerializeField] private GameObject[] arrow;
+    [SerializeField] private static GameObject defTile;
+    [SerializeField] private static GameObject endTile;
+    [SerializeField] private static GameObject startTile;
+    [SerializeField] private static GameObject cpTile;
+    [SerializeField] private static GameObject newTile;
+    [SerializeField] private static GameObject cpTempTile;
+    [SerializeField] private static GameObject newTempTile;
+    [SerializeField] private static GameObject qsTile;
+    [SerializeField] private static GameObject colliderBrick;
+    [SerializeField] private static GameObject flashTile;
+    [SerializeField] private static GameObject[] arrow;
 
     [Header("BRICK\n")]
     [SerializeField] public GameObject brick;
@@ -84,7 +86,6 @@ public class MakeMap : MonoBehaviour
     private static bool makingLevel = false;
     private static int arrowCounter = 0;
     private bool canPlaceTransparentTile;
-    
 
     void Awake()
     {
@@ -94,124 +95,135 @@ public class MakeMap : MonoBehaviour
 
         Instance = this;
     }
-
-    public void CreateMap()
+    public void CreateMap(Sprite[] sprites, int level)
     {
-        for (int x = 0; x < map.rect.width; x++)
+        for(int i = 1; i <= sprites.Length; i++)
         {
-            for (int y = 0; y < map.rect.height; y++)
+            for (int row = 0; row < map.rect.width; row++)
             {
-                myTexture = map.texture;
-                thisPixel = myTexture.GetPixel(x, y);
-                if(thisPixel.a != 0 && x+1 > trueMapWidth)
+                for (int col = 0; col < map.rect.height; col++)
                 {
-                    trueMapWidth = x+1;
-                }
-
-                if (thisPixel.a != 0 && y + 1 > trueMapHeight)
-                {
-                    trueMapHeight = y+1;
-
-                }
-                if (ArrowDetector())
-                {
-                    switch (LevelManager.currentLevel)
+                    myTexture = map.texture;
+                    thisPixel = myTexture.GetPixel(row, col);
+                    if (thisPixel.a != 0 && row + 1 > trueMapWidth)
                     {
-                        case 1: arrowCounter = 0;
-                            break;
-                        case 30:
-                            arrowCounter = 1;
-                            break;
-                        case 44:
-                            arrowCounter = 2;
-                            break;
-                        case 56:
-                            arrowCounter = 3;
-                            break;
-                        case 70:
-                            arrowCounter = 4;
-                            break;
+                        trueMapWidth = row + 1;
                     }
-                    arrows.Add(Instantiate(arrow[arrowCounter], new Vector3(x, 1, y), Quaternion.identity));
-                    
-                    arrows[arrows.Count - 1].transform.rotation = arrow[arrowCounter].transform.rotation;
-                    arrowCounter++;
-                }
-                //tiles
-                if (MatchColor(0, 1, 0, 1))
-                {
-                    Tiles.Add(Instantiate(defTile, new Vector3(x, -1.5f, y), Quaternion.identity));
-                }
-                //EndTile
-                else if (MatchColor(0, 0, 1, .2f))
-                {
-                    EndTilePos = Instantiate(endTile, new Vector3(x, -1.5f, y), Quaternion.identity);
-                }
-                //StartTile
-                else if (MatchColor(1, 0, 0, .2f))
-                {
-                    StartTilePos.Add(Instantiate(startTile, new Vector3(x, -1.5f, y), Quaternion.identity));
-                }
-                //hiddenTileActivators
-                else if (MatchColor(1, 1, 0, .2f))
-                {
-                    HiddenTileActivators.Add(Instantiate(cpTile, new Vector3(x, -1.5f, y), Quaternion.identity));
-                }
-                //hiddenTiles
-                else if (MatchColor(0, 1, 1, .2f))
-                {
-                    HiddenTiles.Add(Instantiate(newTile, new Vector3(x, -1.5f, y), Quaternion.identity));
-                    SetTilesActiveState(false, HiddenTiles);
 
-                    GameObject tile;
-                    HiddenTilesColliders.Add(tile = Instantiate(colliderBrick, new Vector3(x, -1.5f, y), Quaternion.identity));
-                    tile.name = "hiddenTileCollider";
-                    tile.SetActive(true);
-                }
-                //hiddenTempTile
-                else if (MatchColor(1, 1, 1, .2f))
-                {
-                    HiddenTempTiles.Add(Instantiate(newTempTile, new Vector3(x, -1.5f, y), Quaternion.identity));
-                    SetTilesActiveState(false, HiddenTempTiles);
-
-                    GameObject tile;
-                    HiddenTempTilesColliders.Add(tile = Instantiate(colliderBrick, new Vector3(x, -1.5f, y), Quaternion.identity));
-                    tile.name = "hiddenTempTileCollider";
-                    tile.SetActive(true);
-                }
-                //hiddenTempTileActivators
-                else if (MatchColor(1, 0, 1, .2f))
-                {
-                    HiddenTempTileActivators.Add(Instantiate(cpTempTile, new Vector3(x, -1.5f, y), Quaternion.identity));
-                }
-                //qsTilesReference
-                else if (MatchColor(0, 0, 0, .2f))
-                {
-                    QuickSandTilesReference.Add(new Vector3(x, -1.5f, y));
-                }
-
-                //flashTiles
-                else if (MatchColor(1, 0, 0.5f, .2f, 0.1f))
-                {
-                    FlashTiles.Add(Instantiate(flashTile, new Vector3(x, -1.5f, y), Quaternion.identity));
-                    SetTilesActiveState(false, FlashTiles);
-
-                    GameObject tile;
-                    FlashTilesColliders.Add(tile = Instantiate(colliderBrick, new Vector3(x, -1.5f, y), Quaternion.identity));
-                    tile.SetActive(true);
-                    canPlaceTransparentTile = true;
-                }
-                //Transparent
-                else
-                {
-                    if(TouchesAnotherTile(x,y, myTexture))
+                    if (thisPixel.a != 0 && col + 1 > trueMapHeight)
                     {
-                        TransparentTiles.Add(Instantiate(colliderBrick, new Vector3(x, -1.5f, y), Quaternion.identity));
+                        trueMapHeight = col + 1;
+
+                    }
+                    if (ArrowDetector())
+                    {
+                        switch (level)
+                        {
+                            case 1:
+                                arrowCounter = 0;
+                                break;
+                            case 30:
+                                arrowCounter = 1;
+                                break;
+                            case 44:
+                                arrowCounter = 2;
+                                break;
+                            case 56:
+                                arrowCounter = 3;
+                                break;
+                            case 70:
+                                arrowCounter = 4;
+                                break;
+                        }
+                        arrows.Add(Instantiate(arrow[arrowCounter], new Vector3(row, 1, col), Quaternion.identity));
+
+                        arrows[arrows.Count - 1].transform.rotation = arrow[arrowCounter].transform.rotation;
+                        arrowCounter++;
+                    }
+                    //tiles
+                    if (MatchColor(0, 1, 0, 1))
+                    {
+                        Tiles.Add(Instantiate(defTile, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        
+                    }
+                    //EndTile
+                    else if (MatchColor(0, 0, 1, .2f))
+                    {
+                        EndTilePos = Instantiate(endTile, new Vector3(row, -1.5f, col), Quaternion.identity);
+                        
+                    }
+                    //StartTile
+                    else if (MatchColor(1, 0, 0, .2f))
+                    {
+                        StartTilePos.Add(Instantiate(startTile, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        
+                    }
+                    //hiddenTileActivators
+                    else if (MatchColor(1, 1, 0, .2f))
+                    {
+                        HiddenTileActivators.Add(Instantiate(cpTile, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        
+                    }
+                    //hiddenTiles
+                    else if (MatchColor(0, 1, 1, .2f))
+                    {
+                        HiddenTiles.Add(Instantiate(newTile, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        SetTilesActiveState(false, HiddenTiles);
+
+                        GameObject tile;
+                        HiddenTilesColliders.Add(tile = Instantiate(colliderBrick, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        tile.name = "hiddenTileCollider";
+                        tile.SetActive(true);
+                    }
+                    //hiddenTempTile
+                    else if (MatchColor(1, 1, 1, .2f))
+                    {
+                        HiddenTempTiles.Add(Instantiate(newTempTile, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        SetTilesActiveState(false, HiddenTempTiles);
+
+                        GameObject tile;
+                        HiddenTempTilesColliders.Add(tile = Instantiate(colliderBrick, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        tile.name = "hiddenTempTileCollider";
+                        tile.SetActive(true);
+                       
+                    }
+                    //hiddenTempTileActivators
+                    else if (MatchColor(1, 0, 1, .2f))
+                    {
+                        HiddenTempTileActivators.Add(Instantiate(cpTempTile, new Vector3(row, -1.5f, col), Quaternion.identity));
+              
+                    }
+                    //qsTilesReference
+                    else if (MatchColor(0, 0, 0, .2f))
+                    {
+                        QuickSandTilesReference.Add(new Vector3(row, -1.5f, col));
+                        
+                    }
+
+                    //flashTiles
+                    else if (MatchColor(1, 0, 0.5f, .2f, 0.1f))
+                    {
+                        FlashTiles.Add(Instantiate(flashTile, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        SetTilesActiveState(false, FlashTiles);
+
+                        GameObject tile;
+                        FlashTilesColliders.Add(tile = Instantiate(colliderBrick, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        tile.SetActive(true);
+                        canPlaceTransparentTile = true;
+                    }
+                    //Transparent
+                    else
+                    {
+                        if (TouchesAnotherTile(row, col, myTexture))
+                        {
+                            TransparentTiles.Add(Instantiate(colliderBrick, new Vector3(row, -1.5f, col), Quaternion.identity));
+                        }
                     }
                 }
             }
         }
 
+        
         //startTilePos.Add(Instantiate(startTile, new Vector3(0, -1.5f, 0), Quaternion.identity));
         SetCameraPos();
         InvokeRepeating("DoFlashTileEffect", 2, 3);
@@ -232,6 +244,8 @@ public class MakeMap : MonoBehaviour
 
     private void CreateBrick()
     {
+        Camera.main.transform.position = new Vector3((trueMapWidth / 2f) - 0.5f, 18 + trueMapHeight, -15 - trueMapHeight);
+
         _brick = Instantiate(brick, new Vector3(0, 3, 0), Quaternion.identity) as GameObject;
         _brick.SetActive(true);
     }
@@ -364,12 +378,12 @@ public class MakeMap : MonoBehaviour
 
     public void DestroyLevel()
     {
-        MoveBrick.IsUp = true;
-        MoveBrick.LastDir = Dir.NONE;
+        BrickManager.IsUp = true;
+        BrickManager.LastDir = Dir.NONE;
 
         detectGameOver.CanPressCheckPoint = true;
 
-        MoveBrick.CanPlaySound = true;
+        BrickManager.CanPlaySound = true;
         try
         {
             Instance.levelFailScreen.SetActive(false);
@@ -431,16 +445,16 @@ public class MakeMap : MonoBehaviour
         }
         catch { }
 
-        MoveBrick.CanMove = true;
+        BrickManager.CanMove = true;
 
     }
 
     public static void RestartLevel()
     {
-        if (MoveBrick.CanPlaySound && AudioManager.SoundOn)
+        if (BrickManager.CanPlaySound && AudioManager.SoundOn)
         {
             AudioManager.Play(Sounds.Die);
-            MoveBrick.CanPlaySound = false;
+            BrickManager.CanPlaySound = false;
         }
         Instance.levelFailScreen.SetActive(true);
         Instance.levelFailScreen.transform.GetChild(2).GetComponent<RectTransform>().localPosition = new Vector2(0, Instance.levelFailScreen.transform.GetChild(2).GetComponent<RectTransform>().localPosition.y);
@@ -448,7 +462,7 @@ public class MakeMap : MonoBehaviour
 
     public void Restart()
     {
-        MoveBrick.CanPlaySound = true;
+        BrickManager.CanPlaySound = true;
         levelFailScreen.SetActive(false);
  
         detectGameOver.FirstTimeInLoop = true;
@@ -464,9 +478,9 @@ public class MakeMap : MonoBehaviour
 
             Instance._brick.transform.rotation = Quaternion.identity;
 
-            MoveBrick.IsUp = true;
+            BrickManager.IsUp = true;
 
-            MoveBrick.LastDir = Dir.NONE;
+            BrickManager.LastDir = Dir.NONE;
 
             Instance._brick.transform.position = new Vector3(0, 3, 0);
 
@@ -511,6 +525,6 @@ public class MakeMap : MonoBehaviour
 
     private void CanMoveLater()
     {
-        MoveBrick.CanMove = true;
+        BrickManager.CanMove = true;
     }
 }

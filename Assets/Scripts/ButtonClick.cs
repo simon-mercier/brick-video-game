@@ -26,8 +26,8 @@ public class ButtonClick : MonoBehaviour
     private SwipeTouch swipeTouch;
     private MakeMap _MakeMap;
     private DetectGameOver _DetectGameOver;
-    private ButtonManager _ButtonManager;
-    private static bool canChangePage = false;
+   // private L _ButtonManager;
+    public static bool canChangePage = false;
     public static bool currentyLoadingLevel = false;
 
     private void Awake()
@@ -36,41 +36,32 @@ public class ButtonClick : MonoBehaviour
         gameObject.SetActive(true);
         levelManager = FindObjectOfType<LevelManager>();
     }
-    private void Update()
-    {
-        if (!swipeTouch)
-            return;
-        if (swipeTouch.SwipeLeft)
-            OnClick_RArrow();
-        else if(swipeTouch.SwipeRight)
-            OnClick_LArrow();
-    }
    
 
-    public void OnClick_Level()
-    {
+    //public void OnClick_Level()
+    //{
         
-            AudioManager.Play(Sounds.Click);
+    //        AudioManager.Play(Sounds.Click);
 
-        if (Convert.ToInt32(gameObject.name.Substring(12)) <= LevelManager.maxLevel)
-        {
-            if (!currentyLoadingLevel)
-            {
-                currentyLoadingLevel = true;
-                transform.parent.parent.parent.GetComponent<Animator>().SetTrigger("Out");
-                Invoke("OnWait_Level", 1);
-            }
-        }
-    }
+    //    if (Convert.ToInt32(gameObject.name.Substring(12)) <= LevelManager.maxLevel)
+    //    {
+    //        if (!currentyLoadingLevel)
+    //        {
+    //            currentyLoadingLevel = true;
+    //            transform.parent.parent.parent.GetComponent<Animator>().SetTrigger("Out");
+    //            Invoke("OnWait_Level", 1);
+    //        }
+    //    }
+    //}
 
-    public void OnWait_Level()
-    {
+    //public void OnWait_Level()
+    //{
 
-        LevelManager.currentLevel = Convert.ToInt32(gameObject.name.Substring(12));
-        levelManager.SpawnLevel();
-        transform.parent.parent.parent.gameObject.SetActive(false);
+    //    LevelManager.currentLevel = Convert.ToInt32(gameObject.name.Substring(12));
+    //    levelManager.SpawnLevel();
+    //    transform.parent.parent.parent.gameObject.SetActive(false);
 
-    }
+    //}
 
 
     public void OnClick_Help()
@@ -162,13 +153,13 @@ public class ButtonClick : MonoBehaviour
                     {
                         child.SetActive(false);
                         canChangePage = true;
-                        MoveBrick.CanMove = true;
+                        BrickManager.CanMove = true;
                     }
                     else
                     {
                         child.SetActive(true);
                         canChangePage = false;
-                        MoveBrick.CanMove = false;
+                        BrickManager.CanMove = false;
                     }
 
                 }
@@ -195,21 +186,7 @@ public class ButtonClick : MonoBehaviour
         StartCoroutine(_DetectGameOver.DestroyLevel(0f));
     }
 
-    public void OnClick_Play()
-    {
-        
-            AudioManager.Play(Sounds.Click);
-
-        canChangePage = true;
-
-        levelSelector.SetActive(true);
-        levelSelector.transform.GetChild(0).gameObject.SetActive(false);
-        levelSelector.transform.GetChild(0).gameObject.SetActive(true);
-
-        transform.parent.gameObject.SetActive(false);
-
-        BannerTextController.ChangeName();
-    }
+    
 
     public void OnClick_Resume()
     {
@@ -245,11 +222,11 @@ public class ButtonClick : MonoBehaviour
         
             AudioManager.Play(Sounds.Click);
 
-        if (LevelManager.currentLevel >= LevelManager.maxLevel)
-        {
-            LevelManager.maxLevel = LevelManager.currentLevel + 1;
-            PlayerPrefs.SetInt("CurrentLevel", LevelManager.maxLevel);
-        }
+        //if (LevelManager.currentLevel >= LevelManager.maxLevel)
+        //{
+        //    LevelManager.maxLevel = LevelManager.currentLevel + 1;
+        //    PlayerPrefs.SetInt("CurrentLevel", LevelManager.maxLevel);
+        //}
         gameObject.transform.parent.gameObject.SetActive(false);
         _MakeMap.Restart();
     }
@@ -268,26 +245,6 @@ public class ButtonClick : MonoBehaviour
         OnClick_Help();
     }
     
-    public void OnClick_LArrow()
-    {
-        if (ButtonManager.page != 0 && canChangePage)
-        {
-            
-                AudioManager.Play(Sounds.Click);
-            StartCoroutine(DoLeftAnim());
-        }
-    }
-
-    public void OnClick_RArrow()
-    {
-        _ButtonManager = FindObjectOfType<ButtonManager>();
-
-        if (ButtonManager.page == (Math.Floor((double) _ButtonManager.buttonPrefabs.Count / 21) - 1) || !canChangePage)
-            return;
-        
-            AudioManager.Play(Sounds.Click);
-        StartCoroutine(DoRightAnim());
-    }
 
     public void OnClick_Selector()
     {
@@ -301,27 +258,10 @@ public class ButtonClick : MonoBehaviour
 
         startScreen.SetActive(true);
         canChangePage = false;
-        BannerTextController.ChangeName();
 
     }
 
-    public void OnClick_Sound()
-    {
-        AudioManager.Play(Sounds.Click);
-
-        AudioManager.SoundOn = !AudioManager.SoundOn;
-
-        if (AudioManager.SoundOn)
-        {
-            gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/SoundOn");
-            PlayerPrefs.SetInt("Sound", 0);
-        }
-        else
-        {
-            gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/SoundOff");
-            PlayerPrefs.SetInt("Sound", 1);
-        }
-    }
+    
     public void OnClick_Levels()
     {
         _MakeMap = FindObjectOfType<MakeMap>();
@@ -353,45 +293,7 @@ public class ButtonClick : MonoBehaviour
         Invoke("ChangeName", .2f);
     }
 
-    private void ChangeName()
-    {
-        BannerTextController.ChangeName();
-    }
 
     
 
-    IEnumerator DoLeftAnim()
-    {
-        _ButtonManager = FindObjectOfType<ButtonManager>();
-        yield return new WaitForSeconds(0f);
-        _ButtonManager.ChangePageLevelSelector(false);
-        _animator.SetTrigger("FadeIn");
-
-        ButtonManager.page--;
-        _ButtonManager.ChangePageLevelSelector(true);
-        BannerTextController.ChangeName();
-        /*
-        if (ButtonManager.page == 0)
-            _ButtonManager.LArrow.SetActive(false);
-        _ButtonManager.RArrow.SetActive(true);*/
-
-    }
-    
-    IEnumerator DoRightAnim()
-    {
-        _ButtonManager = FindObjectOfType<ButtonManager>();
-        yield return new WaitForSeconds(0f);
-        _ButtonManager.ChangePageLevelSelector(false);
-        _animator.SetTrigger("FadeIn");
-
-        ButtonManager.page++;
-        _ButtonManager.ChangePageLevelSelector(true);
-        BannerTextController.ChangeName();
-        /*
-        if (ButtonManager.page == Math.Floor(((double)_ButtonManager.buttonPrefabs.Count / 21) - 1))
-            _ButtonManager.RArrow.SetActive(false);
-        _ButtonManager.LArrow.SetActive(true);*/
-    }
-    
-     
 }

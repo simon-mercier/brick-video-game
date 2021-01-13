@@ -6,5 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: c0fa87c2fb69a45438af31d53b903368
+  - enabled: 1
+    path: Assets/Scenes/LevelSelectionScene.unity
+    guid: 382fad628e2e97c449cbd1746db06424
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: ee0b3250d0762824aa1d44a0ae02c482
+  - enabled: 0
     path: Assets/Scenes/Brick_Game.unity
     guid: defb6b88b84b73440902189ed1eac761
+  m_configObjects: {}
