@@ -14,7 +14,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: ee0b3250d0762824aa1d44a0ae02c482
+  - enabled: 1
+    path: Assets/Scenes/LevelSuccess.unity
+    guid: 1d84275753a69ec4f8a9698b90a4a698
+  - enabled: 1
+    path: Assets/Scenes/LevelFail.unity
+    guid: 753eb02eb0dd1df4eb9a59267c23ea35
+  - enabled: 1
+    path: Assets/Scenes/PauseScene.unity
+    guid: 20091f05716a5374f8b411bf404dbb28
+  - enabled: 1
+    path: Assets/Scenes/GameCompleted.unity
+    guid: 69d12608b8308fb45afd848a4b59f825
   - enabled: 0
-    path: Assets/Scenes/Brick_Game.unity
-    guid: defb6b88b84b73440902189ed1eac761
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ColliderTile : Tile
 {
@@ -6,6 +7,6 @@ public class ColliderTile : Tile
 
     protected override void OnBrickCollision()
     {
-        
+        LevelManager.Instance.LevelFailed();
     }
 }

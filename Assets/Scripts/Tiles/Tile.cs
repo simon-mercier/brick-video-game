@@ -2,14 +2,13 @@
 
 public abstract class Tile : MonoBehaviour
 {
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag != "Brick")
+        if (other.gameObject.tag != "Brick")
             return;
 
         OnBrickCollision();
     }
-
     protected abstract void OnBrickCollision();
     
 }

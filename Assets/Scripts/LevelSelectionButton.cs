@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class LevelSelectionButton : MonoBehaviour
+public class LevelSelectionButton : SingleClickButton
 {
-    public int Level { get; set; }
-    public void OnClick_Button()
+    protected override void OnClick()
     {
-        LevelManager.Instance.LoadLevel(Level);
+        SceneManager.LoadScene(Scenes.LevelSelectionScene, LoadSceneMode.Single);
     }
 }

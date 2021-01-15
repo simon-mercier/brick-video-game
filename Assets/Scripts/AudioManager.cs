@@ -7,13 +7,16 @@ using System;
 
 public class AudioManager : MonoBehaviour {
 
-    public static bool SoundOn = true;
+    private static AudioManager instance = null;
+    public static AudioManager Instance => instance;
 
-    private static Dictionary<Sounds, Sound> sounds;
+    public bool SoundOn = true;
+
+    private Dictionary<Sounds, Sound> sounds;
 
     public void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(instance ??= this);
     }
     private void Start()
     {
@@ -33,11 +36,10 @@ public class AudioManager : MonoBehaviour {
             sound.Source.volume = sound.Volume;
             sound.Source.pitch = sound.Pitch;
             sound.Source.loop = sound.Loop;
-
         }
     }
 
-    public static void Play(Sounds sound)
+    public void Play(Sounds sound)
     {
         if (SoundOn)
             sounds[sound]?.Source.Play();

@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public sealed class SoundButton : MonoBehaviour {
+public sealed class SoundButton : Button {
 
 	void Start () 
     {
-        AudioManager.SoundOn = PlayerPrefs.GetInt("Sound") == 1;
-
-        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>(AudioManager.SoundOn ? "Sprites/SoundOn" : "Sprites/SoundOff");
+        AudioManager.Instance.SoundOn = PlayerPrefs.GetInt("Sound") == 1;
+        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>(AudioManager.Instance.SoundOn ? "Sprites/SoundOn" : "Sprites/SoundOff");
     }
-    public void OnClick_Sound()
+
+    protected override void OnClick()
     {
-        AudioManager.Play(Sounds.Click);
+        AudioManager.Instance.Play(Sounds.Click);
 
-        AudioManager.SoundOn = !AudioManager.SoundOn;
-
-        if (AudioManager.SoundOn)
+        if (AudioManager.Instance.SoundOn = !AudioManager.Instance.SoundOn)
         {
             gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/SoundOn");
             PlayerPrefs.SetInt("Sound", 1);

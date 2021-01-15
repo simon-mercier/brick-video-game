@@ -6,8 +6,9 @@ public class CheckPointTile : Tile
 
     protected override void OnBrickCollision()
     {
-        if (!BrickManager.IsUp)
+        if (!LevelManager.Instance.Brick.GetComponent<BrickManager>().IsUp)
             return;
 
+        LevelManager.Instance.ActivateHiddenCheckPoint();
     }
 }

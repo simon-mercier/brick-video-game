@@ -6,8 +6,6 @@ public class NormalTile : Tile
 
     protected override void OnBrickCollision()
     {
-        if (!BrickManager.IsUp)
             return;
-
     }
 }

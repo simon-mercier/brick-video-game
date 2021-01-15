@@ -12,79 +12,66 @@ public static class Serilization
         for (int i = 1; i <= mapsSprites.Length; i++)
         {
             var myTexture = mapsSprites[i - 1].texture;
-            var map = new char[(int)mapsSprites[i - 1].rect.width, (int)mapsSprites[i - 1].rect.height];
+            var data = new char[(int)mapsSprites[i - 1].rect.width, (int)mapsSprites[i - 1].rect.height];
 
+            var trueMapWidth = int.MinValue;
+            var trueMapHeight = int.MinValue;
             for (int row = 0; row < mapsSprites[i - 1].rect.width; row++)
             {
                 for (int col = 0; col < mapsSprites[i - 1].rect.height; col++)
                 {
+
                     var thisPixel = myTexture.GetPixel(row, col);
+
+                    if (thisPixel.a != 0 && row + 1 > trueMapWidth)
+                        trueMapWidth = row + 1;
+
+                    if (thisPixel.a != 0 && col + 1 > trueMapHeight)
+                        trueMapHeight = col + 1;
+
                     //tiles
                     if (MatchColor(thisPixel, 0, 1, 0, 1))
-                    {
-                        map[row, col] = 't';
-                    }
+                        data[row, col] = 't';
                     //EndTile
                     else if (MatchColor(thisPixel, 0, 0, 1, .2f))
-                    {
-                        map[row, col] = 'e';
-                    }
+                        data[row, col] = 'e';
                     //StartTile
                     else if (MatchColor(thisPixel, 1, 0, 0, .2f))
-                    {
-                        map[row, col] = 's';
-                    }
+                        data[row, col] = 's';
                     //hiddenTileActivators
                     else if (MatchColor(thisPixel, 1, 1, 0, .2f))
-                    {
-                        map[row, col] = 'a';
-                    }
+                        data[row, col] = 'a';
                     //hiddenTiles
                     else if (MatchColor(thisPixel, 0, 1, 1, .2f))
-                    {
-                        map[row, col] = 'h';
-                    }
+                        data[row, col] = 'h';
                     //hiddenTempTile
                     else if (MatchColor(thisPixel, 1, 1, 1, .2f))
-                    {
-                        map[row, col] = 'p';
-                    }
+                        data[row, col] = 'p';
                     //hiddenTempTileActivators
                     else if (MatchColor(thisPixel, 1, 0, 1, .2f))
-                    {
-                        map[row, col] = 'c';
-
-                    }
+                        data[row, col] = 'c';
                     //qsTilesReference
                     else if (MatchColor(thisPixel, 0, 0, 0, .2f))
-                    {
-                        map[row, col] = 'q';
-                    }
-
+                        data[row, col] = 'q';
                     //flashTiles
                     else if (MatchColor(thisPixel, 1, 0, 0.5f, .2f, 0.1f))
-                    {
-                        map[row, col] = 'f';
-                    }
+                        data[row, col] = 'f';
                     //Transparent
-                    else
-                    {
-                        if (TouchesAnotherTile(row, col, myTexture))
-                        {
-                            map[row, col] = '0';
-                        }
-                    }
+                    else if (TouchesAnotherTile(row, col, myTexture))
+                        data[row, col] = '0';
                 }
             }
-            SerializeLevel(i, map);
+            SerializeLevel(i, new LevelData(trueMapWidth, trueMapHeight, data));
         }
     }
 
-    private static void SerializeLevel(int level, char[,] data)
+    private static void SerializeLevel(int level, LevelData data)
     {
-        Debug.Log("written " + level);
-        string destination = Application.dataPath + "/Levels/Level" + level + ".dat";
+        string destination = Application.persistentDataPath + "/Levels/Level" + level + ".dat";
         Debug.Log(destination);
+
+        if (!Directory.Exists(Application.persistentDataPath + "/Levels/Level"))
+            Directory.CreateDirectory(Application.persistentDataPath + "/Levels/Level");
 
         var file = File.Exists(destination) ? File.OpenWrite(destination) : File.Create(destination);
 
@@ -92,20 +79,21 @@ public static class Serilization
         bf.Serialize(file, data);
         file.Close();
     }
-    public static char[,] DeserializeLevel(int level)
+    public static LevelData DeserializeLevel(int level)
     {
-        string destination = Application.dataPath + "/Levels/Level" + level + ".dat";
+        var destination = Application.persistentDataPath + "/Levels/Level" + level + ".dat";
         FileStream file;
 
-        if (File.Exists(destination)) file = File.OpenRead(destination);
+        if (File.Exists(destination)) 
+            file = File.OpenRead(destination);
         else
         {
             Debug.LogError("File not found");
             return null;
         }
 
-        BinaryFormatter bf = new BinaryFormatter();
-        var data = bf.Deserialize(file) as char[,];
+        var bf = new BinaryFormatter();
+        var data = bf.Deserialize(file) as LevelData;
         file.Close();
         return data;
     }
@@ -122,5 +110,19 @@ public static class Serilization
     private static bool MatchColor(Color thisPixel, float r, float g, float b, float a, float increment)
     {
         return thisPixel.r <= r + increment && thisPixel.r >= r - increment && thisPixel.g <= g + increment && thisPixel.g >= g - increment && thisPixel.b <= b + increment && thisPixel.b >= b - increment && thisPixel.a >= a;
+    }
+}
+
+[System.Serializable]
+public class LevelData
+{
+    public int Width { get; private set; }
+    public int Height { get; private set; }
+    public char[,] Data { get; private set; }
+    public LevelData(int width, int height, char[,] data)
+    {
+        Width = width;
+        Height = height;
+        Data = data;
     }
 }
