@@ -9,7 +9,7 @@
   <br/>
   <br/>
     Try a WebGL version of the game: <br />
-    <a href="https://simon-mercier.github.io/brick-video-game/"><strong>View WebGL version!</strong></a> <br />
+    <a href="https://simon-mercier.github.io/brick-video-game/"><strong>🎮WebGL version🎮</strong></a> <br />
   </p>
 </p>
 
@@ -17,10 +17,11 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project) 
-  * [Built With](#built-with)
+* [Built With](#built-with)
+* [See the Code](#see-the-code) 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+### About the Project
 
 When starting the development of this game, I had been experimenting with Unity3d and C# for about a year and thought it was time to produce my first complete game.
 
@@ -39,10 +40,12 @@ I encourage you to try it, it’s fun and free 😊
 
 ### Built With
 - Unity3d and C#. 
-  - I learned Unity3d and C# by myself by making multiple games with my free time.
+  - I learned Unity3d and C# by myself by making multiple games with my spare time.
 - The levels were designed using a 20x20 pixel bitmap of different colors representing different tiles types. A class is then responsible to convert
 the bitmap image to a playable level.
   - To improve loading performance, a static constructor converts and serializes those pixel bitmaps to .dat files once.
 
+## See the Code
+The code for this game is located under Assets/Scripts <a href="https://github.com/simon-mercier/brick-video-game/tree/master/Assets/Scripts"><strong>here</strong></a> 
 
 
