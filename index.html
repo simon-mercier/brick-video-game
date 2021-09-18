@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Brick</title>
+    <title>Brick</title>
   </head>
   <body style="text-align: center">
     <canvas id="unity-canvas" width=1728 height=972 style="width: 1728px; height: 972px; background: #B3B3B3"></canvas>
@@ -18,9 +18,9 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/Builds.data.gz",
-        frameworkUrl: "Build/Builds.framework.js.gz",
-        codeUrl: "Build/Builds.wasm.gz",
+        dataUrl: "Build/Builds.data",
+        frameworkUrl: "Build/Builds.framework.js",
+        codeUrl: "Build/Builds.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "simon-mercier",
         productName: "Brick",
