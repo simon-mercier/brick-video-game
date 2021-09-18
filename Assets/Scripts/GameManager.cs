@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(instance ??= this);
-        //Serilization.SerializeLevels();
+        
 
         if (PlayerPrefs.GetInt("LastUnlockedLevel") == 0)
             PlayerPrefs.SetInt("LastUnlockedLevel", 1);

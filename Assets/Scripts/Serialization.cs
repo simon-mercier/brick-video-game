@@ -6,6 +6,13 @@ using UnityEngine;
 
 public static class Serilization
 {
+    static readonly string directory = $"{Application.dataPath}/Levels/";
+
+    static Serilization()
+    {
+         SerializeLevels();
+    }
+
     public static void SerializeLevels()
     {
         var mapsSprites = Resources.LoadAll<Sprite>("Sprites/Levels");
@@ -67,11 +74,11 @@ public static class Serilization
 
     private static void SerializeLevel(int level, LevelData data)
     {
-        string destination = Application.persistentDataPath + "/Levels/Level" + level + ".dat";
+        var destination = $"{directory}Level{level}.dat";
         Debug.Log(destination);
 
-        if (!Directory.Exists(Application.persistentDataPath + "/Levels/Level"))
-            Directory.CreateDirectory(Application.persistentDataPath + "/Levels/Level");
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
 
         var file = File.Exists(destination) ? File.OpenWrite(destination) : File.Create(destination);
 
@@ -81,7 +88,7 @@ public static class Serilization
     }
     public static LevelData DeserializeLevel(int level)
     {
-        var destination = Application.persistentDataPath + "/Levels/Level" + level + ".dat";
+        var destination = $"{directory}Level{level}.dat";
         FileStream file;
 
         if (File.Exists(destination)) 
