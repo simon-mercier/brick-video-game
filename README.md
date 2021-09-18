@@ -8,8 +8,8 @@
     A fun and unique puzzle game where you have to move a brick to a tile
   <br/>
   <br/>
-    A WebGL demo of the game: <br />
-    <a href="https://simon-mercier.gitlab.io/brick/"><strong>View demo!</strong></a> <br />
+    Try a WebGL version of the game: <br />
+    <a href="https://simon-mercier.github.io/brick-video-game/"><strong>View WebGL version!</strong></a> <br />
   </p>
 </p>
 
