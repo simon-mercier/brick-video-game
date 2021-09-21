@@ -5,11 +5,11 @@
   </a>
 
   <p align="center">
-    A fun and unique puzzle game where you have to move a brick to a tile
+    A fun and unique puzzle game where you have to move a brick to a specific tile
   <br/>
   <br/>
-    A WebGL demo of the game: <br />
-    <a href="https://simon-mercier.gitlab.io/brick/"><strong>View demo!</strong></a> <br />
+    Try a WebGL version of the game: <br />
+    <a href="https://simon-mercier.github.io/brick-video-game/"><strong>🎮WebGL version🎮</strong></a> <br />
   </p>
 </p>
 
@@ -17,27 +17,35 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project) 
-  * [Built With](#built-with)
+* [Built With](#built-with)
+* [See the Code](#see-the-code) 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+### About the Project
 
-I had been expirimenting with Unity3d and C# for about a year and thought it was time to produce my first complete game.
-I took some inspiration from an old flash game I used to play as a kid and made a mobile game using the same concept and expanding it
-making unique twists to it. 
+When starting the development of this game, I had been experimenting with Unity3d and C# for about a year and thought it was time to produce my first complete game.
 
-The goal of the game is to move a brick from the start position to the end tile (the blue tile) with an upright position. The game might
-seem simple, but it is actually quite complex and requires some level of strategy and planning to reach the end tile. 
+I took some inspiration from an old flash game I used to play as a kid and made a mobile game using the same concept. To make it distinct, I added unique twists to it. Indeed, 6 special tiles were added, each serving their own purpose and adding an extra challenge to the game. 
 
-Each of the 84 levels guide the players to understand the game's mechanics and guides them to use those mechanics in upcomming levels.
+The goal of the game is to move a brick (with touch and mouse swipes or with the keyboard arrows) from the start tile (red tile) to the end tile (blue tile) at an upright position. The game might seem simple at first, but it is actually quite complex and requires some level of strategy and planning to reach the end tile. 
 
-- Note: I made this project in 2018 and recently updated it a little to make it presentable.
+All the 84 levels guide the player to understand the game’s mechanics and guides them to use those mechanics in upcoming levels.
+
+All new tiles reveal dozens of new and unique challenges, making for an amusing user experience.
+
+I encourage you to try it, it’s fun and free 😊
+
+
+- Note: Although I made this project in 2018, I recently put it on git and updated it a little to make it presentable.
 
 ### Built With
 - Unity3d and C#. 
-  - I learned Unity3d and C# by myself by making multiple games with my free time.
+  - I learned Unity3d and C# by myself by making multiple games with my spare time.
 - The levels were designed using a 20x20 pixel bitmap of different colors representing different tiles types. A class is then responsible to convert
 the bitmap image to a playable level.
+  - To improve loading performance, a static constructor converts and serializes those pixel bitmaps to .dat files once.
 
+## See the Code
+The code for this game is located under Assets/Scripts <a href="https://github.com/simon-mercier/brick-video-game/tree/master/Assets/Scripts"><strong>here</strong></a> 
 
 
