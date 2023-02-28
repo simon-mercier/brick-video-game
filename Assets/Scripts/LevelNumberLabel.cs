@@ -5,7 +5,7 @@ public class LevelNumberLabel : MonoBehaviour
 {
     private void Start()
     {
-        var level = LevelManager.Instance?.GetLevelNumber();
-        GetComponent<TextMeshProUGUI>().text = "Level " + level;
+        int? level = LevelManager.Instance?.GetLevelNumber();
+        GetComponent<TextMeshProUGUI>().text = "level " + level;
     }
 }

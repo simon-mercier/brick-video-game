@@ -18,7 +18,7 @@ public sealed class LevelManager : MonoBehaviour
     private Level currentLevel = null;
     private int lastPlayedLevelNumber;
 
-    private float TIME_UNTIL_CHANGE_SCENE = .5f;
+    private readonly float TIME_UNTIL_CHANGE_SCENE = .5f;
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public sealed class LevelManager : MonoBehaviour
     public void LevelCompleted()
     {
         Brick.GetComponent<BrickManager>().CanMove = false;
-        Invoke("LevelCompletedLogic", TIME_UNTIL_CHANGE_SCENE);
+        Invoke(nameof(LevelCompletedLogic), TIME_UNTIL_CHANGE_SCENE);
     }
 
     private void LevelCompletedLogic()
@@ -75,7 +75,7 @@ public sealed class LevelManager : MonoBehaviour
     public void LevelFailed()
     {
         Brick.GetComponent<BrickManager>().CanMove = false;
-        Invoke("LevelFailedLogic", TIME_UNTIL_CHANGE_SCENE);
+        Invoke(nameof(LevelFailedLogic), TIME_UNTIL_CHANGE_SCENE);
     }
 
     private void LevelFailedLogic()
