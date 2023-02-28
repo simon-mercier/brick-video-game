@@ -478,7 +478,7 @@ GameObject:
   - component: {fileID: 855287815}
   - component: {fileID: 855287814}
   m_Layer: 5
-  m_Name: You Fell
+  m_Name: completed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Congratulations you completed the game!
+  m_text: 'congratulations you completed the game!
 
 '
   m_isRightToLeft: 0
@@ -971,7 +971,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart?
+  m_text: restart
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 343cebb228480674295421008f8fe662, type: 2}
   m_sharedMaterial: {fileID: 6888326156290334359, guid: 343cebb228480674295421008f8fe662,
@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level selction
+  m_text: level selection
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 343cebb228480674295421008f8fe662, type: 2}
   m_sharedMaterial: {fileID: 6888326156290334359, guid: 343cebb228480674295421008f8fe662,

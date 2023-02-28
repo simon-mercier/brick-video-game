@@ -14,7 +14,7 @@ public class LevelButton : MonoBehaviour
     private void Start()
     {
         name = "Level Button " + Level;
-        GetComponentInChildren<TextMeshProUGUI>().text = "Level " + Level;
+        GetComponentInChildren<TextMeshProUGUI>().text = "level " + Level;
         transform.SetParent(gameObject.transform, false);
 
         if (Level > LevelManager.LastUnlockedLevel)
